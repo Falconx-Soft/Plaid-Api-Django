@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+
+    <section class="pcoded-main-container" style="display: flex; justify-content:center; padding-top:100px">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Api's</h5>
+                </div>
+                <div class="card-body table-border-style">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Username</th>
+                                    <th>Bank</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in api %}
+                                <tr>
+                                    <td>{{a.id}}</td>
+                                    <td>{{a.user}}</td>
+                                    <td>{{a.bankName}}</td>
+                                    <td><a href="{% url 'get_identity' a.id %}">view</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <button id="getAccessToken" type="button" class="btn  btn-primary">Add Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <!-- Apex Chart -->
+    <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+    <!-- custom-chart js -->
+    <script src="/static/assets/js/pages/dashboard-main.js"></script>
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+
+    <script>
+
+        const getAccessToken = document.getElementById("getAccessToken");
+
+        getAccessToken.addEventListener("click", function(){
+            const p_token = "";
+            $.ajax({
+                url: "/create_link_token/",
+                method: "GET",
+                success: function (data) {
+                    const linkHandler = Plaid.create({
+                            token: data.state,
+                            onSuccess: (public_token, metadata) => {
+                                // Send the public_token to your app server.
+                                $.post('/exchange_public_token/{{request.user.id}}/'+metadata.institution.name+'/', {
+                                public_token: public_token,
+                                });
+                            },
+                            onExit: (err, metadata) => {
+                                console.log("Exit");
+                            },
+                            onEvent: (eventName, metadata) => {
+                                // Optionally capture Link flow events, streamed through
+                                // this callback as your users connect an Item to Plaid.
+                                console.log(event);
+                            },
+                        });
+                        linkHandler.open();
+                },
+            });
+
+        });
+	</script>
+
+{% endblock javascripts %}

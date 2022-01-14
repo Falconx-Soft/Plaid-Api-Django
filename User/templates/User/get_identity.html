@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+<style>
+
+.detils_area{
+	padding: 50px;
+	position: relative;
+}
+
+.details_card{
+	padding: 20px;
+}
+
+.detail{
+	margin-right: 20px;
+	width: auto;
+	overflow-wrap: anywhere;
+	display: flex;
+}
+</style>
+
+  
+{% endblock stylesheets %}
+
+{% block content %}
+<section class="pcoded-main-container" style="display: flex; justify-content:center; padding-top:100px">
+	<div class="detils_area">
+		<h1>Account Details</h1>
+		<a style="position:absolute; right: 70px; top:55px;" href="{% url 'get_transactions' id %}"><h3>View Transactions</h3></a>
+	{% for account in identity %}
+			<div class="details_card shadow-lg p-3 mb-5 bg-white rounded">
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Account ID:</b></p>
+					<p>{{account.account_id}}</p>
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Balance:</b> </p>
+					<p style="margin-right: 10px;"><b>Available:</b> {{account.balances.available}}</p>
+					<p><b>Current:</b> {{account.balances.current}}</p>
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Name:</b></p>
+					<p>{{account.name}}</p>
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Type:</b></p>
+					<p style="margin-right: 10px;">{{account.type}}</p>
+					<p style="margin-right: 10px;"><b>Subtype:</b> {{account.subtype}}</p>
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Owner Name:</b></p>
+					{% for o in account.owners %}
+						<p>{% for name in o.names %} <p style="margin-bottom:5px">{{name}}</p> {% endfor %}</p>
+					{% endfor %}
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Phone:</b></p>
+					{% for o in account.owners %}
+						<p>{% for p in o.phone_numbers %}<p style="margin-bottom:5px; margin-right:10px;">{{p.data}}, </p> {% endfor %}</p>
+					{% endfor %}
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Email:</b></p>
+					{% for o in account.owners %}
+					<p>{% for e in o.emails %}<p style="margin-bottom:5px; margin-right:10px;">{{e.data}}, </p> {% endfor %}</p>
+					{% endfor %}
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Address:</b></p>
+					{% for o in account.owners %}
+					<p>{% for a in o.addresses %}<p style="margin-bottom:5px; margin-right:10px;">{{a.data.city}}, </p> {% endfor %}</p>
+					{% endfor %}
+				</div>
+
+			</div>
+	{% endfor %}
+	</div>
+</section>
+{% endblock content %}

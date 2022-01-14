@@ -1,0 +1,89 @@
+{% extends "base-fullscreen.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block content %} 
+
+	<!-- [ auth-signup ] start -->
+	<div class="auth-wrapper">
+		<div class="auth-content">
+			<div class="card">
+				<div class="row align-items-center text-center">
+					<div class="col-md-12">
+						<div class="card-body">
+							<img src="/static/assets/images/logo-dark.png" alt="" class="img-fluid mb-4">
+							<h4 class="mb-3 f-w-400">
+								<h4 class="mb-3 f-w-400">
+									Sign UP
+								</h4>
+							</h4>
+							<span class="mb-0 text-muted">
+								<span style="margin: 0px; color: red;" class="text-error">{{ form.username.errors }}</span>
+								<span style="margin: 0px; color: red;" class="text-error">{{ form.email.errors }}</span>
+								<span style="margin: 0px; color: red;" class="text-error">{{ form.password1.errors }}</span>
+								<span style="margin: 0px; color: red;" class="text-error">{{ form.password2.errors }}</span>
+								{% if msg %}
+									<p style="margin: 0px; color: green;">{{ msg | safe }}</p>
+								{% else %}
+									<p style="margin: 0px;">Add your credentials</p>
+								{% endif %}  
+							</span>
+							<!-- dummy spacer -->
+							<p> <br /> </p>		
+							
+							<!-- Hide the form on success -->
+							{% if not success %}
+								<form method="POST" action="{% url 'register' %}">
+
+									{% csrf_token %}  
+															
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="feather icon-user"></i></span>
+										</div>
+										<input type="text" class="form-control" placeholder="Username" name="username">
+									</div>
+
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="feather icon-mail"></i></span>
+										</div>
+										<input type="email" class="form-control" placeholder="Email" name="email">
+									</div>
+
+									<div class="input-group mb-4">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="feather icon-lock"></i></span>
+										</div>
+										<input type="password" class="form-control" placeholder="Password" name="password1">
+									</div>
+
+									<div class="input-group mb-4">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="feather icon-lock"></i></span>
+										</div>
+										<input type="password" class="form-control" placeholder="Confirm Password" name="password2">
+									</div>
+									<button type="submit" name="register" class="btn btn-primary btn-block mb-4">Sign up</button>
+								
+								</form>
+
+								<p class="mb-0 text-muted">Have an account? <a href="{% url 'login' %}" class="f-w-400">Login</a></p>
+							{% endif %}
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [ auth-signup ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+	<script src="/static/assets/js/waves.min.js"></script>
+
+{% endblock javascripts %} 

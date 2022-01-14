@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+<style>
+
+.detils_area{
+	padding: 50px;
+	position: relative;
+}
+
+.details_card{
+	padding: 20px;
+	width: 750px;
+}
+
+.detail{
+	margin-right: 20px;
+	width: auto;
+	overflow-wrap: anywhere;
+	display: flex;
+}
+</style>
+
+  
+{% endblock stylesheets %}
+
+{% block content %}
+<section class="pcoded-main-container" style="display: flex; justify-content:center; padding-top:100px">
+	<div class="detils_area">
+		<h1>Transactions Details</h1>
+		<a style="position:absolute; right: 70px; top:55px;" href="{% url 'get_identity' id %}"><h3>View Details</h3></a>
+	{% for t in transactions %}
+			<div class="details_card shadow-lg p-3 mb-5 bg-white rounded">
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Account ID:</b></p>
+					<p>{{t.account_id}}</p>
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Balances:</b></p>
+					<p style="margin-right: 10px;"><b>Available:</b>{{t.balances.available}}</p>
+					<p style="margin-right: 10px;"><b>Current:</b>{{t.balances.current}}</p>
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Name:</b></p>
+					<p>{{t.name}}</p>
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Official Name:</b></p>
+					<p>{{t.official_name}}</p>
+				</div>
+
+				<div class="detail">
+					<p style="margin-right: 10px;"><b>Type:</b></p>
+					<p style="margin-right: 10px;">{{t.type}}</p>
+					<p style="margin-right: 10px;"><b>Subtype:</b> {{t.subtype}}</p>
+				</div>
+
+			</div>
+	{% endfor %}
+	</div>
+</section>
+{% endblock content %}
